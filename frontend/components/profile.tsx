@@ -2,7 +2,7 @@
 
 export default function MyProfile() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white p-6">
+    <div className="flex flex-col items-center justify-start min-h-screen bg-white p-6">
       <h1 className="text-2xl font-bold mb-2">My Profile</h1>
 
       {/* 상단 텍스트 */}

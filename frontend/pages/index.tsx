@@ -9,7 +9,7 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState<"donate" | "profile">("donate");
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="h-screen overflow-hidden flex flex-col bg-white">
       {/* 상단 네비게이션 */}
       <div className="flex justify-end items-center gap-10 px-6 py-4 border-b border-gray-200">
         <div className="flex gap-4 text-sm text-gray-600">

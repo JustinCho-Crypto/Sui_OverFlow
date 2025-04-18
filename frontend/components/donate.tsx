@@ -58,7 +58,7 @@ export default function DonatePage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-white p-6">
+    <div className="flex flex-col items-center justify-start min-h-screen bg-white p-6">
       {currentAccount && <div className="mt-2 text-sm text-gray-600">Connected: {currentAccount.address}</div>}
 
       <h1 className="text-2xl font-bold mt-10 mb-2">Charui</h1>
