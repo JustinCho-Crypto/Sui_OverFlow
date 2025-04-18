@@ -31,15 +31,14 @@ export default function DonatePage() {
 
       // create_vault 호출 (모듈 주소, 함수명, 파라미터 순)
       const vault = tx.moveCall({
-        target: "0x9fb899c12c334a3b6b548aa21ec2c8a20776e9f13cd74f047c21f64cd803e522::Vault::create_vault", // 실제 배포된 패키지 ID로 교체!
+        target: "0xce7eb03f1cbd42ad482f003610cd6423dd143d3be56109da2f06d2a36dfe74c6::Vault::create_vault", // 실제 배포된 패키지 ID로 교체!
         arguments: [
           splitCoin,
           tx.pure.u64(3), // 예: 3개월 (duration_months), 필요에 따라 변경
+          tx.pure.address(userAddress),
           tx.object("0x6"), // clock object (Sui에서 고정)
         ],
       });
-
-      await tx.transferObjects([vault], tx.pure.address(userAddress));
 
       // 트랜잭션 실행
       await signAndExecute(

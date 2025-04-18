@@ -23,17 +23,19 @@ public struct Vault has key, store {
 public fun create_vault(
     coin: Coin<sui::SUI>,
     duration_months: u64,
+    recipient:address,
     clock: &clock::Clock,
     ctx: &mut TxContext
-): Vault {
+) {
     let owner = tx_context::sender(ctx);
-    Vault {
+    let vault = Vault {
         id: object::new(ctx),
         owner,
         balance: coin,
         start_time: clock::timestamp_ms(clock),
         duration_months
-    }
+    };
+    transfer::transfer(vault, recipient)
 }
 
 // --- 이벤트 발생 ---  
