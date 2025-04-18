@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SuiClientProvider, WalletProvider } from '@mysten/dapp-kit';
 import { getFullnodeUrl } from '@mysten/sui/client';
 import type { AppProps } from 'next/app';
-
+import '../styles/globals.css';
 const queryClient = new QueryClient();
 const networks = {
   devnet: { url: getFullnodeUrl('devnet') },

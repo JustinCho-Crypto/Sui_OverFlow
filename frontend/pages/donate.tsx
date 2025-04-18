@@ -66,12 +66,17 @@ export default function DonatePage() {
   };
 
   return (
-    <div>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white p-6">
       <ConnectButton />
-      {currentAccount && <div>Connected: {currentAccount.address}</div>}
-      <div>
+      {currentAccount && <div className="mt-2 text-sm text-gray-600">Connected: {currentAccount.address}</div>}
+      <div className="flex gap-3 mt-3">
         {PRESET_AMOUNTS.map((amt) => (
-          <button key={amt} onClick={() => setSelectedAmount(amt)} disabled={isPending}>
+          <button key={amt} onClick={() => setSelectedAmount(amt)} disabled={isPending}
+          className={`px-5 py-2 rounded-full text-sm font-semibold shadow transition-all duration-150
+            ${selectedAmount === amt
+              ? 'bg-blue-200 text-blue-900 ring-2 ring-blue-400'
+              : 'bg-blue-50 text-blue-700 hover:bg-blue-100'}
+            disabled:opacity-50`}>
             {amt} SUI
           </button>
         ))}
@@ -84,6 +89,7 @@ export default function DonatePage() {
           setCustomAmount(e.target.value);
           setSelectedAmount(null); // preset 해제
         }}
+         className="mt-4 border border-purple-200 rounded-md px-4 py-2 w-40 text-center text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-300"
       />
 
       <button
@@ -94,10 +100,13 @@ export default function DonatePage() {
             (customAmount === '' || isNaN(Number(customAmount)) || Number(customAmount) <= 0)
           ) || !currentAccount || isPending
         }
+        className="mt-2 px-6 py-2 rounded-md text-white font-semibold
+          bg-blue-400 hover:bg-blue-500 transition
+          disabled:opacity-50 disabled:cursor-not-allowed"
       >
         {isPending ? "기부 중..." : "Donate"}
       </button>
-      {status && <div>{status}</div>}
+      {status && <div className="mt-4 text-sm text-gray-700">{status}</div>}
     </div>
   );
 } 
