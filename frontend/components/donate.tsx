@@ -3,9 +3,10 @@
 import {useCurrentAccount, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
 import { useState } from "react";
+import Image from "next/image";
 
 const PRESET_AMOUNTS = [1, 5, 10, 20];
-const CATEGORIES = ["사호르", "트랄랄레", "카푸치노", "바나나닌노"];
+const CATEGORIES = ["사호르", "봄바르딜로", "트랄랄레로"];
 
 export default function DonatePage() {
   const currentAccount = useCurrentAccount();
@@ -58,47 +59,42 @@ export default function DonatePage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen bg-white p-6">
-      {currentAccount && <div className="mt-2 text-sm text-gray-600">Connected: {currentAccount.address}</div>}
+    <div className="flex flex-col items-center justify-start min-h-screen pt-10 bg-white p-6">
+      {currentAccount && <div className="mt-2 text-md text-gray-600">Connected: {currentAccount.address}</div>}
 
-      <h1 className="text-2xl font-bold mt-10 mb-2">Charui</h1>
-      <p className="text-sm text-gray-600 mb-4">Proof of Charity through Sui and Walrus</p>
+      <h1 className="text-3xl font-bold mt-10 mb-2">Charui</h1>
+      <p className="text-base text-gray-600 mb-4">Proof of Charity through Sui and Walrus</p>
 
-      <div className="w-full max-w-md border border-gray-200 rounded-lg p-6 shadow-sm bg-gray-50">
-        <h2 className="text-lg font-semibold mb-4">Donate</h2>
-
-        {/* ✅ 카테고리 선택 */}
-        <label className="block text-sm font-medium text-gray-600 mb-1">Support</label>
-        <select
-          value={selectedCategory ?? ''}
-          onChange={(e) => {
-            setSelectedCategory(e.target.value);
-            setSelectedAmount(null);
-            setCustomAmount('');
-          }}
-          className="w-full border border-gray-300 rounded-md p-2 mb-6 shadow-sm"
-        >
-          <option value="">-- 기부 대상을 선택하세요 --</option>
-          {CATEGORIES.map((cat) => (
-            <option key={cat} value={cat}>{cat}</option>
+      <div className="w-full max-w-3xl border border-gray-200 rounded-xl p-8 shadow-md bg-gray-50">
+        <h2 className="text-xl font-semibold mb-6">Support Category</h2>
+        <div className="grid grid-cols-3 gap-6 mb-8">
+          {CATEGORIES.map((cat, idx) => (
+            <div
+              key={cat}
+              onClick={() => {
+                setSelectedCategory(cat);
+                setSelectedAmount(null);
+                setCustomAmount('');
+              }}
+              className={`cursor-pointer flex flex-col items-center justify-center p-6 rounded-lg shadow-sm border transition hover:shadow-lg
+                ${selectedCategory === cat ? 'bg-blue-100 border-blue-400' : 'bg-gray-100 border-transparent'}`}
+            >
+              <Image src={`/images/category-${idx + 1}.png`} alt={cat} width={96} height={96} className="mb-3" />
+              <span className="text-lg font-medium text-gray-800">{cat}</span>
+            </div>
           ))}
-        </select>
-
-        <div className="text-xs text-gray-400 mb-4">
-          How SUI & Walrus are utilized: <br/>
-          blah blah blah 
         </div>
 
-        {/* ✅ 금액 선택 */}
         {selectedCategory && (
           <>
-            <div className="flex flex-wrap justify-between gap-2 mb-4">
+            <h3 className="text-md font-medium text-gray-700 mb-4">Select Amount</h3>
+            <div className="flex flex-wrap justify-between gap-4 mb-6">
               {PRESET_AMOUNTS.map((amt) => (
                 <button
                   key={amt}
                   onClick={() => setSelectedAmount(amt)}
                   disabled={isPending}
-                  className={`flex-1 whitespace-nowrap px-3 py-2 rounded-md text-sm font-medium shadow-sm
+                  className={`flex-1 whitespace-nowrap px-5 py-3 rounded-lg text-md font-semibold shadow-sm
                     ${selectedAmount === amt
                       ? 'bg-blue-200 text-blue-900 ring-2 ring-blue-400'
                       : 'bg-blue-50 text-blue-700 hover:bg-blue-100'}
@@ -115,7 +111,7 @@ export default function DonatePage() {
                   setCustomAmount(e.target.value);
                   setSelectedAmount(null);
                 }}
-                className="w-24 px-2 py-2 border border-gray-300 rounded-md text-center text-sm shadow-sm"
+                className="w-28 px-4 py-3 border border-gray-300 rounded-md text-center text-md shadow-sm"
               />
             </div>
 
@@ -125,14 +121,14 @@ export default function DonatePage() {
                 (selectedAmount == null && (customAmount === '' || isNaN(Number(customAmount)) || Number(customAmount) <= 0))
                 || !currentAccount || isPending
               }
-              className="mt-2 w-full px-4 py-2 rounded-md text-white font-semibold bg-blue-500 hover:bg-blue-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="mt-2 w-full px-6 py-3 rounded-lg text-white text-lg font-semibold bg-blue-500 hover:bg-blue-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isPending ? "기부 중..." : `Donate ${totalAmount.toFixed(2)} SUI`}
             </button>
           </>
         )}
 
-        {status && <div className="mt-4 text-sm text-gray-700 text-center">{status}</div>}
+        {status && <div className="mt-6 text-md text-gray-700 text-center">{status}</div>}
       </div>
     </div>
   );
