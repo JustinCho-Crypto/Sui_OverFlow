@@ -4,24 +4,33 @@ import { ConnectButton, useCurrentAccount, useSignAndExecuteTransaction } from "
 import { Transaction } from "@mysten/sui/transactions";
 import { useState } from "react";
 
-const PRESET_AMOUNTS = [1, 5, 10]; // SUI 단위
+const PRESET_AMOUNTS = [1, 5, 10, 20]; // SUI 단위
 
 export default function DonatePage() {
   const currentAccount = useCurrentAccount();
   const { mutate: signAndExecute, isPending } = useSignAndExecuteTransaction();
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
+  const [customAmount, setCustomAmount] = useState('');
   const [status, setStatus] = useState("");
 
+  // 금액 파싱 (preset 또는 custom)
+  const parsedAmount = selectedAmount ?? parseFloat(customAmount);
   const handleDonate = async () => {
-    if (!currentAccount || selectedAmount == null) {
+    if (!currentAccount || isNaN(parsedAmount) || parsedAmount <= 0) {
       setStatus("지갑을 연결하고 금액을 선택하세요.");
       return;
     }
+
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      setStatus("올바른 금액을 입력해주세요.");
+      return;
+    }
+
     setStatus("트랜잭션 준비 중...");
 
     try {
       // 1 SUI = 1_000_000_000 mist
-      const amountInMist = selectedAmount * 1_000_000_000;
+      const amountInMist = (selectedAmount ?? parseFloat(customAmount)) * 1_000_000_000;
       const userAddress = currentAccount.address;
       // 트랜잭션 생성
       const tx = new Transaction();
@@ -67,13 +76,31 @@ export default function DonatePage() {
           </button>
         ))}
       </div>
-      <button onClick={handleDonate} disabled={selectedAmount == null || !currentAccount || isPending}>
+      <input
+        type="number"
+        placeholder="직접 입력 (SUI)"
+        value={customAmount}
+        onChange={(e) => {
+          setCustomAmount(e.target.value);
+          setSelectedAmount(null); // preset 해제
+        }}
+      />
+
+      <button
+        onClick={handleDonate}
+        disabled={
+          (
+            selectedAmount == null &&
+            (customAmount === '' || isNaN(Number(customAmount)) || Number(customAmount) <= 0)
+          ) || !currentAccount || isPending
+        }
+      >
         {isPending ? "기부 중..." : "Donate"}
       </button>
       {status && <div>{status}</div>}
     </div>
   );
-}
+} 
 
 
 
