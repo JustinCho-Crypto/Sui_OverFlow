@@ -17,43 +17,50 @@ export default function WalrusUploader() {
 
   const handleUpload = async () => {
     if (!currentAccount || !file) {
-      setStatus("❗ 지갑 연결과 파일 선택이 필요합니다");
+      setStatus("지갑 연결과 파일 선택이 필요합니다");
       return;
     }
-
+  
     try {
       setStatus("📦 파일 서명 중...");
-
-      // 파일 해시 생성
+  
+      // 1. 파일 해시 생성 (SHA-256)
       const fileBuffer = await file.arrayBuffer();
-      const hashBuffer = await crypto.subtle.digest("SHA-256", fileBuffer);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const hashBase64 = btoa(String.fromCharCode(...hashArray));
-
-      // 서명 요청
-      const result = await signMessage({ message: hashBase64 });
+      const fileHash = await crypto.subtle.digest("SHA-256", fileBuffer);
+      const hashBytes = new Uint8Array(fileHash);
+      const hashBase64 = btoa(String.fromCharCode(...hashBytes));
+  
+      // 2. 사람이 읽을 수 있는 메시지 구성
+      const readableMessage = `Walrus 파일 업로드에 동의합니다.
+  
+  파일명: ${file.name}
+  파일 해시 (base64): ${hashBase64}
+  타임스탬프: ${new Date().toISOString()}`;
+  
+      // 3. 지갑으로 서명 요청
+      const result = await signMessage({ message: readableMessage });
       const signature = result.signature;
       if (!signature) throw new Error("서명에 실패했습니다");
-
+  
       setStatus("🚀 업로드 중...");
-
+  
+      // 4. FormData 구성해서 API로 전송
       const form = new FormData();
       form.append("file", file);
       form.append("signature", signature);
       form.append("signer", currentAccount.address);
-      form.append("hash", hashBase64);
-
+  
       const res = await fetch("/api/upload", {
         method: "POST",
         body: form,
       });
-
+  
       const json = await res.json();
-
+  
       if (res.ok) {
         setStatus("✅ 업로드 성공! URL: " + json.url);
       } else {
-        throw new Error(json.error || "알 수 없는 오류");
+        throw new Error(json.error);
       }
     } catch (err: any) {
       setStatus("❌ 에러 발생: " + err.message);
