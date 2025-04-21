@@ -33,12 +33,14 @@ export default function WalrusUploader() {
       // 2. 사람이 읽을 수 있는 메시지 구성
       const readableMessage = `Walrus 파일 업로드에 동의합니다.
   
-  파일명: ${file.name}
-  파일 해시 (base64): ${hashBase64}
-  타임스탬프: ${new Date().toISOString()}`;
+      파일명: ${file.name}
+      파일 해시 (base64): ${hashBase64}
+      타임스탬프: ${new Date().toISOString()}`;
   
       // 3. 지갑으로 서명 요청
-      const result = await signMessage({ message: readableMessage });
+      const result = await signMessage({
+        message: new TextEncoder().encode(readableMessage),
+      });
       const signature = result.signature;
       if (!signature) throw new Error("서명에 실패했습니다");
   
@@ -58,7 +60,7 @@ export default function WalrusUploader() {
       const json = await res.json();
   
       if (res.ok) {
-        setStatus("✅ 업로드 성공! URL: " + json.url);
+        setStatus(`✅ 업로드 성공! Blob ID: ${json.blobId}`);
       } else {
         throw new Error(json.error);
       }
