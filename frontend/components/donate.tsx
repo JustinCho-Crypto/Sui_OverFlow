@@ -67,7 +67,7 @@ export default function DonatePage() {
 
       tx.moveCall({
         target:
-          "0x013ed1d7368ab267d9652a97108753e560ad40ad2351f989e9dc206d317c54b8::nft::generate_and_transfer_nft",
+          "0xf1acfc8f6ae44c241f504502c389436a66a6377b3f25d9979c29c8a94bb42674::nft::generate_and_transfer_nft",
         arguments: [
           tx.pure.address(userAddress),
           tx.pure.address(userAddress),
@@ -84,7 +84,7 @@ export default function DonatePage() {
 
       tx.moveCall({
         target:
-          "0x013ed1d7368ab267d9652a97108753e560ad40ad2351f989e9dc206d317c54b8::nft::generate_and_transfer_nft",
+          "0xf1acfc8f6ae44c241f504502c389436a66a6377b3f25d9979c29c8a94bb42674::nft::generate_and_transfer_nft",
         arguments: [
           tx.pure.address(selectedCategory?.address || ""),
           tx.pure.address(userAddress),
@@ -99,15 +99,30 @@ export default function DonatePage() {
         ],
       });
 
+      tx.moveCall({
+        target:
+          "0xaecfc3aa16b9cdb2adf6e611aeddea3ada25a859f3541a5f061f9083854b4580::donate::init_donation",
+        arguments: [
+          tx.pure.address(userAddress),
+          tx.pure.address(selectedCategory?.address || ""),
+          tx.pure.u64((parsedAmount / 1000) * 1_000_000_000),
+          tx.pure.u64(10),
+          tx.object("0x6"),
+        ],
+      });
+
       await signAndExecute(
         {
           transaction: tx,
-          options: { showEffects: true },
+          options: { showEffects: true, showObjectChanges: true },
         },
         {
-          onSuccess: (res) =>
-            setStatus("기부 성공! 트랜잭션 해시: " + res.digest),
-          onError: (e) => setStatus("에러 발생: " + e.message),
+          onSuccess: (res) => {
+            setStatus("기부 성공! 트랜잭션 해시: " + res.digest);
+          },
+          onError: (e) => {
+            setStatus("에러 발생: " + e.message);
+          },
         }
       );
     } catch (e: any) {

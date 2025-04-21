@@ -32,8 +32,8 @@ public struct NFTMinted has copy, drop {
 
 public fun generate_and_transfer_nft(
     owner: address,
-    from: address,
-    to: address,
+    sponsor: address,
+    recipient: address,
     name: vector<u8>,
     description: vector<u8>,
     duration: u64,
@@ -46,8 +46,8 @@ public fun generate_and_transfer_nft(
         id: object::new(ctx),
         name: utf8(name),
         description: utf8(description),
-        from_address: from,
-        to_address: to,
+        from_address: sponsor,
+        to_address: recipient,
         duration: duration,
         start_date: start_date,
         image_url: utf8(image_url),

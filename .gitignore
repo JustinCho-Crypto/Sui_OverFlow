@@ -4,3 +4,4 @@ dist
 .env
 *.log
 contracts/build/*
+backend/.env
