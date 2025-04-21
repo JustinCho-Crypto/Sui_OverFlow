@@ -17,20 +17,27 @@
   "description": "",
   "dependencies": {
     "@mysten/dapp-kit": "^0.14.53",
-    "@mysten/sui": "^1.27.1",
+    "@mysten/sui": "^1.28.0",
     "@mysten/sui.js": "^0.54.1",
     "@mysten/wallet-standard": "^0.14.5",
+    "@mysten/walrus": "^0.0.17",
     "@tanstack/react-query": "^5.74.3",
     "@types/node": "^22.14.1",
     "@types/react": "^19.1.2",
+    "form-data": "^4.0.2",
+    "formidable": "^3.5.2",
     "next": "^15.3.0",
+    "node-fetch": "^3.3.2",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-dropzone": "^14.3.8",
     "ts-sdk": "^0.5.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "walrus-sdk": "^1.0.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.4",
+    "@types/formidable": "^3.4.5",
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.3",
     "tailwindcss": "^4.1.4"
