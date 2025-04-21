@@ -7,13 +7,16 @@ use sui::event;
 use std::string::String;
 use std::string::utf8;
 
-
 public struct DonationNFT has key, store {
         id: UID,
         /// Name of the asset
         name: String,
         /// Description of the asset
         description: String,
+        /// from address
+        from_address: address,
+        /// to address
+        to_address: address,
         /// duration of the rental
         duration: u64,
         /// start_date for the rental
@@ -28,6 +31,8 @@ public struct NFTMinted has copy, drop {
 }
 
 public fun generate_and_transfer_nft(
+    owner: address,
+    from: address,
     to: address,
     name: vector<u8>,
     description: vector<u8>,
@@ -36,10 +41,13 @@ public fun generate_and_transfer_nft(
     image_url: vector<u8>,
     ctx: &mut TxContext,
 ) {
+
     let nft = DonationNFT {
         id: object::new(ctx),
         name: utf8(name),
         description: utf8(description),
+        from_address: from,
+        to_address: to,
         duration: duration,
         start_date: start_date,
         image_url: utf8(image_url),
@@ -51,7 +59,7 @@ public fun generate_and_transfer_nft(
         name: nft.name,
     });
 
-    transfer(nft, to)
+    transfer(nft, owner)
 }
 
 
