@@ -3,7 +3,7 @@
 import { useState } from "react";
 import DonatePage from "../components/donate";
 import MyProfile from "../components/profile";
-import Uploader from "../components/uploader";
+import WalrusUploader from "../components/walrusuploader";
 import { ConnectButton } from "@mysten/dapp-kit";
 
 export default function Home() {
@@ -27,7 +27,7 @@ export default function Home() {
       <div className="p-6">
         {activeTab === "donate" && <DonatePage />}
         {activeTab === "profile" && <MyProfile />}
-        {activeTab === "tusky" && <Uploader />}
+        {activeTab === "tusky" && <WalrusUploader />}
       </div>
     </div>
   );

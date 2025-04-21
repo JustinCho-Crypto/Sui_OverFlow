@@ -1,7 +1,6 @@
 import FormData from "form-data";
 import fs from "fs";
-import path from "path";
-import fetch from "node-fetch"; // node 환경에선 이거 써야 함
+import fetch from "node-fetch";
 
 const PUBLISHER_URL = "https://publisher.walrus-testnet.walrus.space";
 
@@ -11,6 +10,8 @@ export async function uploadFileToWalrus(
   signature: string
 ): Promise<{ url: string }> {
   const filePath = file.filepath || file.path;
+  if (!filePath) throw new Error("파일 경로가 존재하지 않습니다");
+
   const fileStream = fs.createReadStream(filePath);
 
   const form = new FormData();
@@ -18,23 +19,21 @@ export async function uploadFileToWalrus(
   form.append("signer", signerAddress);
   form.append("signature", signature);
 
-  const headers = form.getHeaders(); 
   const res = await fetch(`${PUBLISHER_URL}/upload`, {
     method: "POST",
-    body: form as any,
+    body: form,
     headers: {
-        ...headers,
-        "x-signer-address": signerAddress,
-        "x-signature": signature,
-      },
+      ...form.getHeaders(),
+    },
   });
 
   if (!res.ok) {
     const text = await res.text();
-    console.error("🧨 업로드 실패 응답 내용:", text);
+    console.error(`🧨 Walrus 업로드 실패 (${res.status}):`, text);
     throw new Error(`Walrus 업로드 실패: ${text}`);
   }
 
   const json = await res.json();
+  console.log("✅ Walrus 업로드 성공:", json);
   return { url: json.url };
 }
