@@ -7,6 +7,7 @@ import {
 import { Transaction } from "@mysten/sui/transactions";
 import { useState } from "react";
 import Image from "next/image";
+import { PACKAGE_ID, OWNER_ADDRESS } from "../config";
 
 const PRESET_AMOUNTS = [1, 5, 10, 20];
 const CATEGORIES = [
@@ -55,19 +56,20 @@ export default function DonatePage() {
       const [splitCoin] = tx.splitCoins(tx.gas, [tx.pure.u64(amountInMist)]);
 
       tx.moveCall({
-        target:
-          "0xce7eb03f1cbd42ad482f003610cd6423dd143d3be56109da2f06d2a36dfe74c6::Vault::create_vault",
+        target: PACKAGE_ID + "::vault::create_vault",
         arguments: [
+          tx.pure.address(OWNER_ADDRESS),
+          tx.pure.address(userAddress),
+          tx.pure.address(selectedCategory?.address || ""),
           splitCoin,
+          tx.pure.u64(10000),
           tx.pure.u64(3),
-          tx.pure.address(userAddress),
           tx.object("0x6"),
         ],
       });
 
       tx.moveCall({
-        target:
-          "0xf1acfc8f6ae44c241f504502c389436a66a6377b3f25d9979c29c8a94bb42674::nft::generate_and_transfer_nft",
+        target: PACKAGE_ID + "::nft::generate_and_transfer_nft",
         arguments: [
           tx.pure.address(userAddress),
           tx.pure.address(userAddress),
@@ -83,8 +85,7 @@ export default function DonatePage() {
       });
 
       tx.moveCall({
-        target:
-          "0xf1acfc8f6ae44c241f504502c389436a66a6377b3f25d9979c29c8a94bb42674::nft::generate_and_transfer_nft",
+        target: PACKAGE_ID + "::nft::generate_and_transfer_nft",
         arguments: [
           tx.pure.address(selectedCategory?.address || ""),
           tx.pure.address(userAddress),
@@ -96,18 +97,6 @@ export default function DonatePage() {
           tx.pure.string(
             "https://ipfs.io/ipfs/bafybeie6ulrzcnnuwx463xljdwvg6fqm5surokcuw4itxai7qa5uh4kmky"
           ),
-        ],
-      });
-
-      tx.moveCall({
-        target:
-          "0xaecfc3aa16b9cdb2adf6e611aeddea3ada25a859f3541a5f061f9083854b4580::donate::init_donation",
-        arguments: [
-          tx.pure.address(userAddress),
-          tx.pure.address(selectedCategory?.address || ""),
-          tx.pure.u64((parsedAmount / 1000) * 1_000_000_000),
-          tx.pure.u64(10),
-          tx.object("0x6"),
         ],
       });
 
