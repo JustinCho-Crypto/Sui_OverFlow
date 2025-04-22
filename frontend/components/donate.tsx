@@ -12,17 +12,17 @@ import { PACKAGE_ID, OWNER_ADDRESS } from "../config";
 const PRESET_AMOUNTS = [1, 5, 10, 20];
 const CATEGORIES = [
   {
-    name: "사호르",
+    name: "Sahor",
     address:
       "0xea92245108b9d62c3b44669eb59f04b546e73ae689ac6753c5240eeb07a4d6be",
   },
   {
-    name: "봄바르딜로",
+    name: "Bombardillo",
     address:
       "0xea92245108b9d62c3b44669eb59f04b546e73ae689ac6753c5240eeb07a4d6be",
   },
   {
-    name: "트랄랄레로",
+    name: "Trallallero",
     address:
       "0x748007b0dace28b91ad1ff0f0ba2a092b87516d45d162de535fc9e03fb3c21f9",
   },
@@ -43,11 +43,11 @@ export default function DonatePage() {
 
   const handleDonate = async () => {
     if (!currentAccount || isNaN(parsedAmount) || parsedAmount <= 0) {
-      setStatus("지갑을 연결하고 금액을 선택하세요.");
+      setStatus("Please connect your wallet and select an amount.");
       return;
     }
 
-    setStatus("트랜잭션 준비 중...");
+    setStatus("Preparing transaction...");
 
     try {
       const amountInMist = totalAmount * 1_000_000_000;
@@ -106,26 +106,19 @@ export default function DonatePage() {
           options: { showEffects: true, showObjectChanges: true },
         },
         {
-          onSuccess: (res) => {
-            setStatus("기부 성공! 트랜잭션 해시: " + res.digest);
-          },
-          onError: (e) => {
-            setStatus("에러 발생: " + e.message);
-          },
+          onSuccess: (res) =>
+            setStatus("Donate success! Transaction hash: " + res.digest),
+          onError: (e) => setStatus("Error occured: " + e.message),
         }
       );
     } catch (e: any) {
-      setStatus("에러 발생: " + e.message);
+      setStatus("Error occured: " + e.message);
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-start min-h-screen pt-10 bg-white p-6">
-      {currentAccount && (
-        <div className="mt-2 text-md text-gray-600">
-          Connected: {currentAccount.address}
-        </div>
-      )}
+      {currentAccount && <div className="mt-2 text-md text-gray-600"></div>}
 
       <h1 className="text-3xl font-bold mt-10 mb-2">Charui</h1>
       <p className="text-base text-gray-600 mb-4">
@@ -188,7 +181,7 @@ export default function DonatePage() {
               ))}
               <input
                 type="number"
-                placeholder="직접 입력"
+                placeholder="Enter amount"
                 value={customAmount}
                 onChange={(e) => {
                   setCustomAmount(e.target.value);
@@ -211,7 +204,7 @@ export default function DonatePage() {
               className="mt-2 w-full px-6 py-3 rounded-lg text-white text-lg font-semibold bg-blue-500 hover:bg-blue-600 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isPending
-                ? "기부 중..."
+                ? "Donating..."
                 : `Donate ${totalAmount.toFixed(2)} SUI`}
             </button>
           </>
