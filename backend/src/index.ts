@@ -8,5 +8,5 @@ async function main() {
   }
 }
 
-setInterval(main, 1000 * 10); // 30분마다 실행 setInterval(main, 1000 * 60 * 30)
+setInterval(main, 1000 * 5); // 30분마다 실행 setInterval(main, 1000 * 60 * 30)
 main();
