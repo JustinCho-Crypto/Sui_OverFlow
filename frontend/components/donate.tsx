@@ -56,7 +56,7 @@ export default function DonatePage() {
 
       tx.moveCall({
         target:
-          "0xce7eb03f1cbd42ad482f003610cd6423dd143d3be56109da2f06d2a36dfe74c6::Vault::create_vault",
+          "0xaecfc3aa16b9cdb2adf6e611aeddea3ada25a859f3541a5f061f9083854b4580::Vault::create_vault",
         arguments: [
           splitCoin,
           tx.pure.u64(3),
@@ -67,7 +67,7 @@ export default function DonatePage() {
 
       tx.moveCall({
         target:
-          "0xf1acfc8f6ae44c241f504502c389436a66a6377b3f25d9979c29c8a94bb42674::nft::generate_and_transfer_nft",
+          "0xaecfc3aa16b9cdb2adf6e611aeddea3ada25a859f3541a5f061f9083854b4580::nft::generate_and_transfer_nft",
         arguments: [
           tx.pure.address(userAddress),
           tx.pure.address(userAddress),
@@ -84,7 +84,7 @@ export default function DonatePage() {
 
       tx.moveCall({
         target:
-          "0xf1acfc8f6ae44c241f504502c389436a66a6377b3f25d9979c29c8a94bb42674::nft::generate_and_transfer_nft",
+          "0xaecfc3aa16b9cdb2adf6e611aeddea3ada25a859f3541a5f061f9083854b4580::nft::generate_and_transfer_nft",
         arguments: [
           tx.pure.address(selectedCategory?.address || ""),
           tx.pure.address(userAddress),

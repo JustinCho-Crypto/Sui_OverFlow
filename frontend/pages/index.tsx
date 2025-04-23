@@ -3,8 +3,8 @@
 import { useState, useEffect } from "react";
 import DonatePage from "../components/donate";
 import MyProfile from "../components/profile";
-import WalrusUploader from "../components/walrusuploader";
 import SharedBlobViewer from "../components/sharedstorage";
+import WalrusUploaderWithAccessCheck from "../components/walrusuploaderwithaccesscheck";
 import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
 
 export default function Home() {
@@ -93,7 +93,7 @@ export default function Home() {
           <div className="p-6">
             {activeTab === "donate" && <DonatePage />}
             {activeTab === "profile" && <MyProfile />}
-            {activeTab === "upload" && <WalrusUploader />}
+            {activeTab === "upload" && <WalrusUploaderWithAccessCheck />}
             {activeTab === "shared" && <SharedBlobViewer />}
           </div>
         </>
