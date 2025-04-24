@@ -51,7 +51,8 @@ export default function DonatePage() {
     ? selectedDuration ?? parseInt(customDuration)
     : 1;
   
-  const totalAmount = amountInMist * parsedDuration * 1.05;
+  const totalAmountWithFee = Math.round(amountInMist * parsedDuration * 1.05);
+  const totalAmount = Math.round(amountInMist * parsedDuration);
 
 
   const handleDonate = async () => {
@@ -65,7 +66,7 @@ export default function DonatePage() {
     try {
       const userAddress = currentAccount.address;
       const tx = new Transaction(); 
-      const [splitCoin] = tx.splitCoins(tx.gas, [tx.pure.u64(totalAmount)]);
+      const [splitCoin] = tx.splitCoins(tx.gas, [tx.pure.u64(totalAmountWithFee)]);
 
       tx.moveCall({
         target: PACKAGE_ID + "::vault::create_vault",
@@ -88,6 +89,7 @@ export default function DonatePage() {
           tx.pure.address(selectedCategory?.address || ""),
           tx.pure.string("Charui"),
           tx.pure.string("Charity-Walrus-Sui"),
+          tx.pure.u64(BigInt(totalAmount)),
           tx.pure.u64(parsedDuration),
           tx.pure.u64(Date.now()),
           tx.pure.string("https://ipfs.io/ipfs/bafybeie6ulrzcnnuwx463xljdwvg6fqm5surokcuw4itxai7qa5uh4kmky"),
@@ -193,7 +195,7 @@ export default function DonatePage() {
             onClick={handleDonate}
             className="w-full py-3 bg-blue-600 text-white rounded disabled:opacity-50"
           >
-            {isPending ? "Donating..." : `Donate ${(totalAmount/1_000_000_000).toFixed(2)} SUI (${parsedDuration} months)`}
+            {isPending ? "Donating..." : `Donate ${(totalAmountWithFee/1_000_000_000).toFixed(2)} SUI (${parsedDuration} months)`}
           </button>
 
           {status && <p className="mt-4 text-center text-gray-700">{status}</p>}

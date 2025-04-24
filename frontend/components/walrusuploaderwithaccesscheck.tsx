@@ -4,11 +4,12 @@ import { useEffect, useState } from "react";
 import WalrusUploader from "./walrusuploader";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import { SuiClient } from "@mysten/sui/client";
+import { PACKAGE_ID } from "../config";
 
 const sui = new SuiClient({ url: "https://fullnode.testnet.sui.io:443" });
 
 const DONATION_NFT_TYPE =
-  "0x085fd83b2e544bb80420ddf2928f4cf4f1302966a65b290a73112875ed53c4e6::nft::DonationNFT";
+  `${PACKAGE_ID}::nft::DonationNFT`;
 
 export default function WalrusUploaderWithAccessCheck() {
   const currentAccount = useCurrentAccount();

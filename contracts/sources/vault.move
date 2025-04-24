@@ -26,15 +26,14 @@ entry fun create_vault(
     recipient: address, 
     coin: Coin<sui::SUI>,
     monthly_amount: u64,
-    interval: u64,
     duration_months: u64,
     clock: &clock::Clock,
     ctx: &mut TxContext
 ) {
-
+    let interval = 24 * 30 * 1000; // 1 month
     let start_date = clock::timestamp_ms(clock);
     let last_sent = start_date - interval;
-    let end_date = start_date + duration_months * 24 * 30 * 1000; //  * 60 * 60
+    let end_date = start_date + interval * duration_months;
 
     let vault = Vault {
         id: object::new(ctx),

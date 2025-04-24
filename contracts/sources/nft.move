@@ -17,6 +17,8 @@ public struct DonationNFT has key, store {
         from_address: address,
         /// to address
         to_address: address,
+        /// amount
+        amount: u64,
         /// duration of the rental
         duration: u64,
         /// start_date for the rental
@@ -36,6 +38,7 @@ public fun generate_and_transfer_nft(
     recipient: address,
     name: vector<u8>,
     description: vector<u8>,
+    amount: u64,
     duration: u64,
     start_date: u64,
     image_url: vector<u8>,
@@ -48,6 +51,7 @@ public fun generate_and_transfer_nft(
         description: utf8(description),
         from_address: sponsor,
         to_address: recipient,
+        amount: amount,
         duration: duration,
         start_date: start_date,
         image_url: utf8(image_url),
