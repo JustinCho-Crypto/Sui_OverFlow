@@ -13,7 +13,7 @@ public struct Vault has key, store {
     sponsor: address, 
     recipient: address, 
     coin: Coin<sui::SUI>, 
-    amount: u64,
+    monthly_amount: u64,
     interval: u64,
     start_date: u64, 
     end_date: u64,
@@ -25,6 +25,7 @@ entry fun create_vault(
     sponsor: address, 
     recipient: address, 
     coin: Coin<sui::SUI>,
+    monthly_amount: u64,
     interval: u64,
     duration_months: u64,
     clock: &clock::Clock,
@@ -34,7 +35,6 @@ entry fun create_vault(
     let start_date = clock::timestamp_ms(clock);
     let last_sent = start_date - interval;
     let end_date = start_date + duration_months * 24 * 30 * 1000; //  * 60 * 60
-    let amount = (coin.value() * interval) / (end_date - start_date);
 
     let vault = Vault {
         id: object::new(ctx),
@@ -42,7 +42,7 @@ entry fun create_vault(
         sponsor: sponsor,
         recipient: recipient,
         coin: coin, 
-        amount: amount,
+        monthly_amount: monthly_amount,
         interval: interval,
         start_date: start_date,
         end_date: end_date,
@@ -60,7 +60,7 @@ entry fun update_vault(
     let now = clock::timestamp_ms(clock);
     assert!(now >= vault.last_sent + vault.interval, 100);
     
-    let split_coin = vault.coin.split(vault.amount, ctx);
+    let split_coin = vault.coin.split(vault.monthly_amount, ctx);
     transfer::public_transfer(split_coin, vault.recipient);
     
     vault.last_sent = now;

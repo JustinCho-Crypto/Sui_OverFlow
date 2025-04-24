@@ -45,11 +45,14 @@ export default function DonatePage() {
   const [customAmount, setCustomAmount] = useState("");
   const [status, setStatus] = useState("");
 
-  const parsedAmount = selectedAmount ?? parseFloat(customAmount);
-  const parsedDuration = donationType === "monthly"
+  const parsedAmount = selectedAmount ?? parseFloat(customAmount); // 입력받은 금액
+  const amountInMist = Math.round(parsedAmount * 1_000_000_000); // 혹시 소수면은 정수로 보정한 값 
+  const parsedDuration = donationType === "monthly" // 이건 Monthly로 받았을 때의 기간
     ? selectedDuration ?? parseInt(customDuration)
     : 1;
-  const totalAmount = parsedAmount * parsedDuration * 1.05;
+  
+  const totalAmount = amountInMist * parsedDuration * 1.05;
+
 
   const handleDonate = async () => {
     if (!currentAccount || isNaN(parsedAmount) || parsedAmount <= 0) {
@@ -60,10 +63,9 @@ export default function DonatePage() {
     setStatus("Preparing transaction...");
 
     try {
-      const amountInMist = totalAmount * 1_000_000_000;
       const userAddress = currentAccount.address;
-      const tx = new Transaction();
-      const [splitCoin] = tx.splitCoins(tx.gas, [tx.pure.u64(amountInMist)]);
+      const tx = new Transaction(); 
+      const [splitCoin] = tx.splitCoins(tx.gas, [tx.pure.u64(totalAmount)]);
 
       tx.moveCall({
         target: PACKAGE_ID + "::vault::create_vault",
@@ -72,7 +74,7 @@ export default function DonatePage() {
           tx.pure.address(userAddress),
           tx.pure.address(selectedCategory?.address || ""),
           splitCoin,
-          tx.pure.u64(10000),
+          tx.pure.u64(amountInMist),
           tx.pure.u64(parsedDuration),
           tx.object("0x6"),
         ],
@@ -129,7 +131,7 @@ export default function DonatePage() {
           <div className="p-4 rounded-lg bg-gray-100">
             <h2 className="font-semibold mb-2">Select Donation Type</h2>
             <div className="flex gap-4">
-              <button onClick={() => setDonationType("temporary")} className={`px-4 py-2 rounded ${donationType === "temporary" ? "bg-blue-300 text-white" : "bg-white border border-gray-300"}`}>Temporarily</button>
+              <button onClick={() => setDonationType("temporary")} className={`px-4 py-2 rounded ${donationType === "temporary" ? "bg-blue-300 text-white" : "bg-white border border-gray-300"}`}>One Time</button>
               <button onClick={() => setDonationType("monthly")} className={`px-4 py-2 rounded ${donationType === "monthly" ? "bg-blue-300 text-white" : "bg-white border border-gray-300"}`}>Monthly</button>
             </div>
           </div>
@@ -191,7 +193,7 @@ export default function DonatePage() {
             onClick={handleDonate}
             className="w-full py-3 bg-blue-600 text-white rounded disabled:opacity-50"
           >
-            {isPending ? "Donating..." : `Donate ${totalAmount.toFixed(2)} SUI`}
+            {isPending ? "Donating..." : `Donate ${(totalAmount/1_000_000_000).toFixed(2)} SUI (${parsedDuration} months)`}
           </button>
 
           {status && <p className="mt-4 text-center text-gray-700">{status}</p>}
