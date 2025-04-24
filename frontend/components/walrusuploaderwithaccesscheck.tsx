@@ -1,4 +1,3 @@
-// components/WalrusUploaderWithAccessCheck.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -6,10 +5,10 @@ import WalrusUploader from "./walrusuploader";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import { SuiClient } from "@mysten/sui/client";
 
-const sui = new SuiClient({ url: "https://fullnode.testnet.sui.io" });
+const sui = new SuiClient({ url: "https://fullnode.testnet.sui.io:443" });
 
 const DONATION_NFT_TYPE =
-  "0xaecfc3aa16b9cdb2adf6e611aeddea3ada25a859f3541a5f061f9083854b4580::nft::DonationNFT";
+  "0x085fd83b2e544bb80420ddf2928f4cf4f1302966a65b290a73112875ed53c4e6::nft::DonationNFT";
 
 export default function WalrusUploaderWithAccessCheck() {
   const currentAccount = useCurrentAccount();
@@ -30,7 +29,7 @@ export default function WalrusUploaderWithAccessCheck() {
 
         const uniqueFrom = Array.from(
           new Set(
-            objects.data.map((nft) => nft.data?.content?.fields?.to_address)
+            objects.data.map((nft) => nft.data?.content?.fields?.from_address)
           )
         );
 
@@ -54,19 +53,20 @@ export default function WalrusUploaderWithAccessCheck() {
     <div className="p-6">
       {!selectedFrom ? (
         <div>
-          <h2 className="text-lg font-bold mb-2">업로드할 기부자 선택</h2>
-          <ul className="space-y-2">
+          <h2 className="text-center text-2xl mb-4">Select Sponsor</h2>
+          <div className="flex justify-center">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {fromAddresses.map((from) => (
-              <li key={from}>
-                <button
-                  onClick={() => setSelectedFrom(from)}
-                  className="px-4 py-2 rounded bg-blue-100 hover:bg-blue-200"
-                >
-                  🎁 from: {from.slice(0, 10)}...
-                </button>
-              </li>
+              <button
+                key={from}
+                onClick={() => setSelectedFrom(from)}
+                className="aspect-square w-full rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300 shadow-sm flex items-center justify-center text-sm font-medium text-blue-800"
+              >
+                {from.slice(0,32)}...
+              </button>
             ))}
-          </ul>
+            </div>
+          </div>
         </div>
       ) : (
         <div>

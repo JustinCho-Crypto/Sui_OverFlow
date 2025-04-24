@@ -1,8 +1,8 @@
 require("dotenv").config();
 
-import { TransactionBlock } from "@mysten/sui.js/transactions";
-import { SuiClient } from "@mysten/sui.js/client";
-import { Ed25519Keypair } from "@mysten/sui.js/keypairs/ed25519";
+import { Transaction } from "@mysten/sui/transactions";
+import { SuiClient } from "@mysten/sui/client";
+import { Ed25519Keypair } from "@mysten/sui/keypairs/ed25519";
 import fs from "fs";
 import path from "path";
 
@@ -47,15 +47,15 @@ export async function runBot(): Promise<void> {
 
   if (now >= lastSent + interval) {
     console.log("⏱ Donation due. Executing...");
-    const tx = new TransactionBlock();
+    const tx = new Transaction();
 
     tx.moveCall({
       target: `${config.packageId}::${config.moduleName}::${config.functionName}`,
       arguments: [tx.object(config.objectId), tx.object(config.clockObjectId)],
     });
 
-    const result = await client.signAndExecuteTransactionBlock({
-      transactionBlock: tx,
+    const result = await client.signAndExecuteTransaction({
+      transaction: tx,
       signer: keypair,
       options: {
         showEffects: true,
