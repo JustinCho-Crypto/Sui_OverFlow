@@ -51,8 +51,6 @@ export default function MyProfile() {
       {/* 상단 텍스트 */}
       <p className="text-sm text-gray-600 mb-1">Total Donations: {totalDonated.toFixed(2)} SUI</p>
       <p className="text-sm text-gray-600 mb-1">Thanks to you, {donationCount} lives have been saved.</p>
-      <p className="text-sm text-gray-600 mb-8">Your Donation and Data has successfully been on Walrus for ___ minutes.</p>
-
       <h2 className="text-md font-semibold mb-2">Thank you for choosing to Donate with Charui.</h2>
 
       {/* 기부 내역 카드 */}

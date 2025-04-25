@@ -1,8 +1,6 @@
 module Charui::nft;
 
-use sui::object::{Self, UID, ID};
 use sui::transfer::transfer;
-use sui::tx_context::{Self, TxContext};
 use sui::event;
 use std::string::String;
 use std::string::utf8;
@@ -64,6 +62,14 @@ public fun generate_and_transfer_nft(
     });
 
     transfer(nft, owner)
+}
+
+public fun get_from_address(nft: &DonationNFT): address {
+    nft.from_address
+}
+
+public fun get_to_address(nft: &DonationNFT): address {
+    nft.to_address
 }
 
 

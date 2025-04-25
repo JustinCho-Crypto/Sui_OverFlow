@@ -4,9 +4,9 @@
 import { useEffect, useState } from "react";
 import { useCurrentAccount, useSuiClient } from "@mysten/dapp-kit";
 import { Transaction } from "@mysten/sui/transactions";
-import { SealClient, SessionKey } from "@mysten/seal";
 import { PACKAGE_ID } from "../config";
 import { fromHex } from "@mysten/sui/utils";
+import { SealClient, SessionKey } from "@mysten/seal";
 
 export default function SealProtectedViewer({ blobId, fromAddress }: { blobId: string; fromAddress: string }) {
   const currentAccount = useCurrentAccount();
