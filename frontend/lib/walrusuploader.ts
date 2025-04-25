@@ -1,8 +1,7 @@
 // lib/walrusuploader.ts
 import fs from "fs";
 import fetch from "node-fetch";
-
-const PUBLISHER_URL = "https://publisher.testnet.walrus.atalma.io";
+import { PUBLISHER_URL } from "../config";
 
 export async function uploadFileToWalrus(
   file: any,
@@ -46,8 +45,8 @@ export async function uploadFileToWalrus(
   const suiObjectId = json.newlyCreated?.blobObject?.id;
 
   return {
-    blobId: json.newlyCreated?.blobObject?.blobId || json.blobId,
-    blobUrl: `https://aggregator.walrus-testnet.walrus.space/v1/blobs/${blobId}`,
-    suiObjectId: json.newlyCreated?.blobObject?.id,
+    blobId: blobId,
+    blobUrl: blobUrl,
+    suiObjectId: suiObjectId,
   };
 }

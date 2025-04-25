@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import DonatePage from "../components/donate";
 import MyProfile from "../components/profile";
-import SharedBlobViewer from "../components/sharedstorage";
 import WalrusUploaderWithAccessCheck from "../components/walrusuploaderwithaccesscheck";
 import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
 
@@ -57,12 +56,6 @@ export default function Home() {
               >
                 ⏫ Upload
               </button>
-              <button
-                onClick={() => setActiveTab("shared")}
-                className={tabButtonStyle(activeTab === "shared")}
-              >
-                📂 Shared Storage
-              </button>
               </div>
             </div>
 
@@ -94,7 +87,6 @@ export default function Home() {
             {activeTab === "donate" && <DonatePage />}
             {activeTab === "profile" && <MyProfile />}
             {activeTab === "upload" && <WalrusUploaderWithAccessCheck />}
-            {activeTab === "shared" && <SharedBlobViewer />}
           </div>
         </>
       )}

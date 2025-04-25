@@ -1,6 +1,8 @@
 const PACKAGE_ID =
-  "0x617290979d4e8891b169a6c1d4b7c4ba00c94d7c804e334b0e86cdd14cd52d78";
+  "0xe69f0a08dbf3d79c358e685596e05886ecf3385500e0b31b8ae8d7eff9ef8e74";
 const OWNER_ADDRESS =
   "0xbb645f5ba1c4be44b2698b06c8e5adf3adfa07d544d886314c26fb06b02ff267";
+const PUBLISHER_URL =
+  "https://publisher.testnet.walrus.atalma.io";
 
-export { PACKAGE_ID, OWNER_ADDRESS };
+export { PACKAGE_ID, OWNER_ADDRESS, PUBLISHER_URL };
