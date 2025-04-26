@@ -7,7 +7,9 @@ import WalrusUploaderWithAccessCheck from "../components/walrusuploaderwithacces
 import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState<"donate" | "profile" | "upload" | "shared" | null>(null);
+  const [activeTab, setActiveTab] = useState<
+    "donate" | "profile" | "upload" | "shared" | null
+  >(null);
   const [role, setRole] = useState<"sponsor" | "recipient" | null>(null);
   const currentAccount = useCurrentAccount();
 
@@ -19,50 +21,71 @@ export default function Home() {
 
   const tabButtonStyle = (active: boolean) =>
     `px-4 py-2 rounded-md text-sm font-semibold transition 
-     ${active ? "bg-blue-100 text-blue-800 ring-2 ring-blue-400" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`;
+     ${
+       active
+         ? "bg-blue-100 text-blue-800 ring-2 ring-blue-400"
+         : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+     }`;
 
   return (
     <div className="h-screen flex flex-col bg-blue-50">
       {/* 상단 네비게이션 */}
       {!currentAccount && !activeTab ? (
         <div className="flex flex-col items-center justify-center flex-grow gap-4">
-          <h1 className="text-xl font-bold text-gray-700">Choose your role 👇</h1>
+          <h1 className="text-4xl font-bold mb-4 mt-8 relative z-10">
+            Charui, Proof of Charity
+          </h1>
+          <h1 className="text-xl font-bold text-gray-700">
+            Choose your role 👇
+          </h1>
           <div className="flex gap-4">
             <button
               onClick={() => setRole("sponsor")}
-              className={`px-6 py-3 rounded-lg font-semibold ${role === "sponsor" ? "bg-blue-200" : "bg-white"}`}
+              className={`px-6 py-3 rounded-lg font-semibold ${
+                role === "sponsor" ? "bg-blue-200" : "bg-white"
+              }`}
             >
               🎁 Sponsor
             </button>
             <button
               onClick={() => setRole("recipient")}
-              className={`px-6 py-3 rounded-lg font-semibold ${role === "recipient" ? "bg-blue-200" : "bg-white"}`}
+              className={`px-6 py-3 rounded-lg font-semibold ${
+                role === "recipient" ? "bg-blue-200" : "bg-white"
+              }`}
             >
               📦 Recipient
             </button>
           </div>
-          {role && <ConnectButton />}
+          {role && (
+            <div className="relative z-10">
+              <ConnectButton />
+            </div>
+          )}
         </div>
       ) : (
         <>
           <div className="flex justify-center items-start px-6 py-4 border-b border-gray-300 bg-white shadow-sm">
             <div className="flex items-center justify-between w-full max-w-6xl">
-            {/* 왼쪽 - For Receiver */}
-            <div className="flex items-center gap-4">
-              <div className="text-xs font-bold text-gray-600">For Receiver</div>
-              <button
-                onClick={() => setActiveTab("upload")}
-                className={tabButtonStyle(activeTab === "upload")}
-              >
-                ⏫ Upload
-              </button>
+              {/* 왼쪽 - For Receiver */}
+              <div className="flex items-center gap-4">
+                <div className="text-xs font-bold text-gray-600">
+                  For Receiver
+                </div>
+                <button
+                  onClick={() => setActiveTab("upload")}
+                  className={tabButtonStyle(activeTab === "upload")}
+                >
+                  ⏫ Upload
+                </button>
               </div>
             </div>
 
             {/* 오른쪽 - For Sponsor */}
             <div className="flex items-center gap-6">
               <div className="flex items-start gap-4">
-                <div className="text-xs font-bold text-gray-600">For Sponsor</div>
+                <div className="text-xs font-bold text-gray-600">
+                  For Sponsor
+                </div>
                 <div className="flex gap-2">
                   <button
                     onClick={() => setActiveTab("donate")}
