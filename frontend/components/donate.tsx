@@ -14,19 +14,19 @@ const DURATION_PRESETS = [3, 6, 12];
 
 const CATEGORIES = [
   {
-    name: "Sahor",
+    name: "Little Stars Home",
     address:
       "0xea92245108b9d62c3b44669eb59f04b546e73ae689ac6753c5240eeb07a4d6be",
     image: "/images/category-1.png",
   },
   {
-    name: "Bombardillo",
+    name: "Bright Horizons Orphanage",
     address:
       "0xfcae6c500b4c5fdfc4c998e7b687bb3afe621c0a6b46a0bd7fbb00cd5958b3ea",
     image: "/images/category-2.png",
   },
   {
-    name: "Trallallero",
+    name: "Hope Haven",
     address:
       "0x748007b0dace28b91ad1ff0f0ba2a092b87516d45d162de535fc9e03fb3c21f9",
     image: "/images/category-3.png",
@@ -134,8 +134,9 @@ export default function DonatePage() {
             <Image
               src={cat.image}
               alt={cat.name}
-              width={80}
-              height={80}
+              width={140}
+              height={140}
+              quality={100}
               className="mx-auto mb-2"
             />
             <div className="text-md font-semibold text-blue-900">
