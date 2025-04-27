@@ -45,10 +45,10 @@ export default function WalrusUploaderWithAccessCheck() {
     checkNFTs();
   }, [currentAccount]);
 
-  if (!currentAccount) return <p className="p-4">지갑 연결이 필요합니다.</p>;
-  if (loading) return <p className="p-4">🔍 NFT 보유 여부 확인 중...</p>;
+  if (!currentAccount) return <p className="p-4">Wallet connection is required.</p>;
+  if (loading) return <p className="p-4">🔍 Checking NFT ownership...</p>;
   if (!fromAddresses.length)
-    return <p className="p-4 text-red-500">❌ 접근 가능한 NFT가 없습니다.</p>;
+    return <p className="p-4 text-red-500">❌ No accessible NFTs.</p>;
 
   return (
     <div className="p-6">
@@ -70,6 +70,7 @@ export default function WalrusUploaderWithAccessCheck() {
           </div>
         </div>
       ) : (
+        selectedFrom && (
         <div>
           <button
             onClick={() => setSelectedFrom(null)}
@@ -77,8 +78,9 @@ export default function WalrusUploaderWithAccessCheck() {
           >
             ← 다른 기부자 선택
           </button>
-          <WalrusUploader from_address={selectedFrom} />
+          <WalrusUploader fromAddress={selectedFrom} />
         </div>
+        )
       )}
     </div>
   );

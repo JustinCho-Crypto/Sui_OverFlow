@@ -1,13 +1,16 @@
-// components/WalrusUploader.tsx
 "use client";
 
 import { useState } from "react";
-import { useCurrentAccount, useSignPersonalMessage } from "@mysten/dapp-kit";
+import { useCurrentAccount, useSignPersonalMessage, useSuiClient, useSignAndExecuteTransaction } from "@mysten/dapp-kit";
+import { Transaction } from "@mysten/sui/transactions";
+import { PACKAGE_ID } from "../config";
 import { useDropzone } from "react-dropzone";
 
-export default function WalrusUploader() {
+export default function WalrusUploader({ fromAddress }: { fromAddress: string }) {
   const currentAccount = useCurrentAccount();
   const { mutateAsync: signMessage } = useSignPersonalMessage();
+  const { mutateAsync: signAndExecute } = useSignAndExecuteTransaction();
+  const suiClient = useSuiClient();
   const [file, setFile] = useState<File | null>(null);
   const [status, setStatus] = useState("");
 
@@ -16,13 +19,13 @@ export default function WalrusUploader() {
   };
 
   const handleUpload = async () => {
-    if (!currentAccount || !file) {
-      setStatus("지갑 연결과 파일 선택이 필요합니다");
+    if (!currentAccount || !file || !fromAddress) {
+      setStatus("Wallet connection, file selection, and target address are required.");
       return;
     }
   
     try {
-      setStatus("📦 파일 서명 중...");
+      setStatus("📦 Signing file...");
   
       // 1. 파일 해시 생성 (SHA-256)
       const fileBuffer = await file.arrayBuffer();
@@ -31,20 +34,20 @@ export default function WalrusUploader() {
       const hashBase64 = btoa(String.fromCharCode(...hashBytes));
   
       // 2. 사람이 읽을 수 있는 메시지 구성
-      const readableMessage = `Walrus 파일 업로드에 동의합니다.
+      const readableMessage = `I agree to upload a file to Walrus.
   
-      파일명: ${file.name}
-      파일 해시 (base64): ${hashBase64}
-      타임스탬프: ${new Date().toISOString()}`;
+      File name: ${file.name}
+      File hash (base64): ${hashBase64}
+      Timestamp: ${new Date().toISOString()}`;
   
       // 3. 지갑으로 서명 요청
-      const result = await signMessage({
+      const signResult = await signMessage({
         message: new TextEncoder().encode(readableMessage),
       });
-      const signature = result.signature;
-      if (!signature) throw new Error("서명에 실패했습니다");
+      const signature = signResult.signature;
+      if (!signature) throw new Error("Failed to sign");
   
-      setStatus("🚀 업로드 중...");
+      setStatus("🚀 Uploading...");
   
       // 4. FormData 구성해서 API로 전송
       const form = new FormData();
@@ -56,16 +59,45 @@ export default function WalrusUploader() {
         method: "POST",
         body: form,
       });
-  
+      
+    console.log("res.status:", res.status);
+
       const json = await res.json();
+      console.log("Frontend received json:", json);
+
+      const { objectId, blobId } = json;
   
-      if (res.ok) {
-        setStatus(`✅ 업로드 성공! Blob ID: ${json.blobId}`);
-      } else {
-        throw new Error(json.error);
+      if (!objectId || !blobId) {
+        throw new Error("Cannot find Object ID or Blob ID");
       }
+      
+      setStatus(`✅ Upload success! Object ID: ${objectId}, Blob ID: ${blobId}`);
+
+        //2. Register_Blob 트랜잭션 만들기
+        const tx = new Transaction();
+        const encodedBlobId = new TextEncoder().encode(blobId);
+        const blobIdVector = Array.from(encodedBlobId);  
+        tx.setSender(currentAccount.address);
+        tx.moveCall({
+          target: `${PACKAGE_ID}::blobregistry::register_blob`,
+          arguments: [
+            tx.pure.address(fromAddress),
+            tx.pure.address(currentAccount.address),
+            tx.pure.address(objectId),
+            tx.pure.vector("u8", blobIdVector),
+          ],
+        });
+
+        //3 SignAndExecute
+        const result = await signAndExecute({
+          transaction: tx,
+          options: { showEffects: true },
+        });
+        console.log("✅ register_blob transaction success:", result.effects.transactionDigest);
+        setStatus(`✅ Upload and registration complete! TX Hash: ${result.digest}`);
     } catch (err: any) {
-      setStatus("❌ 에러 발생: " + err.message);
+      console.error("❌ Error occurred:", err);
+      setStatus("❌ Error occurred: " + err.message || "Unknown error");
     }
   };
 
@@ -73,19 +105,19 @@ export default function WalrusUploader() {
 
   return (
     <div className="flex flex-col items-center p-8">
-      <h1 className="text-xl font-bold mt-4">Walrus 업로드</h1>
+      <h1 className="text-xl font-bold mt-4">Walrus Upload</h1>
       <div
         {...getRootProps()}
         className="mt-4 border-dashed border-2 border-gray-400 p-6 w-96 text-center cursor-pointer"
       >
         <input {...getInputProps()} />
-        {file ? <p>{file.name}</p> : <p>파일을 드래그하거나 클릭해서 업로드</p>}
+        {file ? <p>{file.name}</p> : <p>Drag and drop or click to upload a file</p>}
       </div>
       <button
         onClick={handleUpload}
         className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
       >
-        업로드
+        Upload
       </button>
       <p className="mt-2 text-sm text-gray-700">{status}</p>
     </div>

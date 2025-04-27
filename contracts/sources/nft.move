@@ -64,6 +64,40 @@ public fun generate_and_transfer_nft(
     transfer(nft, owner)
 }
 
+public fun generate_and_transfer_nft_to_recipient(
+    owner: address,
+    sponsor: address,
+    recipient: address,
+    name: vector<u8>,
+    description: vector<u8>,
+    amount: u64,
+    duration: u64,
+    start_date: u64,
+    image_url: vector<u8>,
+    ctx: &mut TxContext,
+) {
+
+    let nft = DonationNFT {
+        id: object::new(ctx),
+        name: utf8(name),
+        description: utf8(description),
+        from_address: sponsor,
+        to_address: recipient,
+        amount: amount,
+        duration: duration,
+        start_date: start_date,
+        image_url: utf8(image_url),
+    };
+    
+    event::emit(NFTMinted {
+        object_id: object::id(&nft),
+        creator: tx_context::sender(ctx),
+        name: nft.name,
+    });
+
+    transfer(nft, recipient)
+}
+
 public fun get_from_address(nft: &DonationNFT): address {
     nft.from_address
 }
@@ -71,5 +105,4 @@ public fun get_from_address(nft: &DonationNFT): address {
 public fun get_to_address(nft: &DonationNFT): address {
     nft.to_address
 }
-
 

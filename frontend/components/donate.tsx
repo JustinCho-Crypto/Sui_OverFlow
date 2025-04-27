@@ -16,19 +16,19 @@ const CATEGORIES = [
   {
     name: "Sahor",
     address:
-      "0xea92245108b9d62c3b44669eb59f04b546e73ae689ac6753c5240eeb07a4d6be",
+      "0xbb645f5ba1c4be44b2698b06c8e5adf3adfa07d544d886314c26fb06b02ff267",
     image: "/images/category-1.png",
   },
   {
     name: "Bombardillo",
     address:
-      "0xfcae6c500b4c5fdfc4c998e7b687bb3afe621c0a6b46a0bd7fbb00cd5958b3ea",
+      "0xbb645f5ba1c4be44b2698b06c8e5adf3adfa07d544d886314c26fb06b02ff267",
     image: "/images/category-2.png",
   },
   {
     name: "Trallallero",
     address:
-      "0x748007b0dace28b91ad1ff0f0ba2a092b87516d45d162de535fc9e03fb3c21f9",
+      "0xbb645f5ba1c4be44b2698b06c8e5adf3adfa07d544d886314c26fb06b02ff267",
     image: "/images/category-3.png",
   },
 ];
@@ -87,6 +87,23 @@ export default function DonatePage() {
 
       tx.moveCall({
         target: PACKAGE_ID + "::nft::generate_and_transfer_nft",
+        arguments: [
+          tx.pure.address(userAddress),
+          tx.pure.address(userAddress),
+          tx.pure.address(selectedCategory?.address || ""),
+          tx.pure.string("Charui"),
+          tx.pure.string("Charity-Walrus-Sui"),
+          tx.pure.u64(BigInt(totalAmount)),
+          tx.pure.u64(parsedDuration),
+          tx.pure.u64(Date.now()),
+          tx.pure.string(
+            "https://ipfs.io/ipfs/bafybeie6ulrzcnnuwx463xljdwvg6fqm5surokcuw4itxai7qa5uh4kmky"
+          ),
+        ],
+      });
+      
+      tx.moveCall({
+        target: PACKAGE_ID + "::nft::generate_and_transfer_nft_to_recipient",
         arguments: [
           tx.pure.address(userAddress),
           tx.pure.address(userAddress),
