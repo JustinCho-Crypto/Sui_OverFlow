@@ -16,19 +16,19 @@ const CATEGORIES = [
   {
     name: "Little Stars Home",
     address:
-      "0xbb645f5ba1c4be44b2698b06c8e5adf3adfa07d544d886314c26fb06b02ff267",
+      "0xea92245108b9d62c3b44669eb59f04b546e73ae689ac6753c5240eeb07a4d6be",
     image: "/images/category-1.png",
   },
   {
     name: "Bright Horizons Orphanage",
     address:
-      "0xbb645f5ba1c4be44b2698b06c8e5adf3adfa07d544d886314c26fb06b02ff267",
+      "0xea92245108b9d62c3b44669eb59f04b546e73ae689ac6753c5240eeb07a4d6be",
     image: "/images/category-2.png",
   },
   {
     name: "Hope Haven",
     address:
-      "0xbb645f5ba1c4be44b2698b06c8e5adf3adfa07d544d886314c26fb06b02ff267",
+      "0xea92245108b9d62c3b44669eb59f04b546e73ae689ac6753c5240eeb07a4d6be",
     image: "/images/category-3.png",
   },
 ];
