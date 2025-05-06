@@ -126,7 +126,10 @@ export default function DonatePage() {
         },
         {
           onSuccess: (res) =>
-            setStatus("Donate success! Transaction hash: " + res.digest),
+            setStatus(
+              `Donate success! View transaction: ` +
+                `<a href="https://suiscan.xyz/testnet/tx/${res.digest}" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">${res.digest}</a>`
+            ),
           onError: (e) => setStatus("Error occured: " + e.message),
         }
       );
@@ -269,7 +272,12 @@ export default function DonatePage() {
                 )} SUI (${parsedDuration} months)`}
           </button>
 
-          {status && <p className="mt-4 text-center text-gray-700">{status}</p>}
+          {status && (
+            <p
+              className="mt-4 text-center text-gray-700"
+              dangerouslySetInnerHTML={{ __html: status }}
+            />
+          )}
         </div>
       )}
     </div>
