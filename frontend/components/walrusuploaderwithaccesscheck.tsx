@@ -8,8 +8,7 @@ import { PACKAGE_ID } from "../config";
 
 const sui = new SuiClient({ url: "https://fullnode.testnet.sui.io:443" });
 
-const DONATION_NFT_TYPE =
-  `${PACKAGE_ID}::nft::DonationNFT`;
+const DONATION_NFT_TYPE = `${PACKAGE_ID}::nft::DonationNFT`;
 
 export default function WalrusUploaderWithAccessCheck() {
   const currentAccount = useCurrentAccount();
@@ -45,7 +44,8 @@ export default function WalrusUploaderWithAccessCheck() {
     checkNFTs();
   }, [currentAccount]);
 
-  if (!currentAccount) return <p className="p-4">Wallet connection is required.</p>;
+  if (!currentAccount)
+    return <p className="p-4">Wallet connection is required.</p>;
   if (loading) return <p className="p-4">🔍 Checking NFT ownership...</p>;
   if (!fromAddresses.length)
     return <p className="p-4 text-red-500">❌ No accessible NFTs.</p>;
@@ -56,30 +56,30 @@ export default function WalrusUploaderWithAccessCheck() {
         <div>
           <h2 className="text-center text-2xl mb-4">Select Sponsor</h2>
           <div className="flex justify-center">
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {fromAddresses.map((from) => (
-              <button
-                key={from}
-                onClick={() => setSelectedFrom(from)}
-                className="aspect-square w-full rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300 shadow-sm flex items-center justify-center text-sm font-medium text-blue-800"
-              >
-                {from.slice(0,32)}...
-              </button>
-            ))}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+              {fromAddresses.map((from) => (
+                <button
+                  key={from}
+                  onClick={() => setSelectedFrom(from)}
+                  className="aspect-square w-full rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300 shadow-sm flex items-center justify-center text-sm font-medium text-blue-800"
+                >
+                  {from.slice(0, 32)}...
+                </button>
+              ))}
             </div>
           </div>
         </div>
       ) : (
         selectedFrom && (
-        <div>
-          <button
-            onClick={() => setSelectedFrom(null)}
-            className="mb-4 text-sm text-blue-600 underline"
-          >
-            ← 다른 기부자 선택
-          </button>
-          <WalrusUploader fromAddress={selectedFrom} />
-        </div>
+          <div>
+            <button
+              onClick={() => setSelectedFrom(null)}
+              className="mb-4 text-sm text-blue-600 underline"
+            >
+              ← Other Sponsors
+            </button>
+            <WalrusUploader fromAddress={selectedFrom} />
+          </div>
         )
       )}
     </div>

@@ -101,7 +101,7 @@ export default function DonatePage() {
           ),
         ],
       });
-      
+
       tx.moveCall({
         target: PACKAGE_ID + "::nft::generate_and_transfer_nft_to_recipient",
         arguments: [
@@ -262,6 +262,8 @@ export default function DonatePage() {
           >
             {isPending
               ? "Donating..."
+              : !parsedAmount || parsedAmount <= 0
+              ? "Please select donation type and amount"
               : `Donate ${(totalAmountWithFee / 1_000_000_000).toFixed(
                   2
                 )} SUI (${parsedDuration} months)`}

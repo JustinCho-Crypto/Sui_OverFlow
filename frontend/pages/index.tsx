@@ -66,40 +66,35 @@ export default function Home() {
         <>
           <div className="flex justify-center items-start px-6 py-4 border-b border-gray-300 bg-white shadow-sm">
             <div className="flex items-center justify-between w-full max-w-6xl">
-              {/* 왼쪽 - For Receiver */}
-              <div className="flex items-center gap-4">
-                <div className="text-xs font-bold text-gray-600">
-                  For Receiver
-                </div>
-                <button
-                  onClick={() => setActiveTab("upload")}
-                  className={tabButtonStyle(activeTab === "upload")}
-                >
-                  ⏫ Upload
-                </button>
-              </div>
-            </div>
-
-            {/* 오른쪽 - For Sponsor */}
-            <div className="flex items-center gap-6">
-              <div className="flex items-start gap-4">
-                <div className="text-xs font-bold text-gray-600">
-                  For Sponsor
-                </div>
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => setActiveTab("donate")}
-                    className={tabButtonStyle(activeTab === "donate")}
-                  >
-                    🎁 Donate
-                  </button>
-                  <button
-                    onClick={() => setActiveTab("profile")}
-                    className={tabButtonStyle(activeTab === "profile")}
-                  >
-                    📄 My Profile
-                  </button>
-                </div>
+              <div className="flex items-center gap-8">
+                {role === "recipient" && (
+                  <div className="flex items-center gap-4">
+                    <button
+                      onClick={() => setActiveTab("upload")}
+                      className={tabButtonStyle(activeTab === "upload")}
+                    >
+                      ⏫ Upload
+                    </button>
+                  </div>
+                )}
+                {role === "sponsor" && (
+                  <div className="flex items-start gap-4">
+                    <div className="flex gap-2">
+                      <button
+                        onClick={() => setActiveTab("donate")}
+                        className={tabButtonStyle(activeTab === "donate")}
+                      >
+                        🎁 Donate
+                      </button>
+                      <button
+                        onClick={() => setActiveTab("profile")}
+                        className={tabButtonStyle(activeTab === "profile")}
+                      >
+                        📄 My Profile
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
               <ConnectButton />
             </div>
