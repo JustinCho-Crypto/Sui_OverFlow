@@ -95,7 +95,7 @@ public fun generate_and_transfer_nft_to_recipient(
         name: nft.name,
     });
 
-    transfer(nft, recipient)
+    transfer(nft, owner)
 }
 
 public fun get_from_address(nft: &DonationNFT): address {

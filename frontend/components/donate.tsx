@@ -8,30 +8,10 @@ import { Transaction } from "@mysten/sui/transactions";
 import { useState } from "react";
 import Image from "next/image";
 import { PACKAGE_ID, OWNER_ADDRESS } from "../config";
+import CATEGORIES from "./recipients";
 
 const PRESET_AMOUNTS = [1, 5, 10, 20];
 const DURATION_PRESETS = [3, 6, 12];
-
-const CATEGORIES = [
-  {
-    name: "Little Stars Home",
-    address:
-      "0xea92245108b9d62c3b44669eb59f04b546e73ae689ac6753c5240eeb07a4d6be",
-    image: "/images/category-1.png",
-  },
-  {
-    name: "Bright Horizons Orphanage",
-    address:
-      "0xea92245108b9d62c3b44669eb59f04b546e73ae689ac6753c5240eeb07a4d6be",
-    image: "/images/category-2.png",
-  },
-  {
-    name: "Hope Haven",
-    address:
-      "0xea92245108b9d62c3b44669eb59f04b546e73ae689ac6753c5240eeb07a4d6be",
-    image: "/images/category-3.png",
-  },
-];
 
 export default function DonatePage() {
   const currentAccount = useCurrentAccount();
@@ -105,7 +85,7 @@ export default function DonatePage() {
       tx.moveCall({
         target: PACKAGE_ID + "::nft::generate_and_transfer_nft_to_recipient",
         arguments: [
-          tx.pure.address(userAddress),
+          tx.pure.address(selectedCategory?.address || ""),
           tx.pure.address(userAddress),
           tx.pure.address(selectedCategory?.address || ""),
           tx.pure.string("Charui"),
