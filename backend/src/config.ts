@@ -5,7 +5,7 @@ const config = {
   moduleName: "vault",
   functionName: "update_vault",
   objectId:
-    "0xb78a0cacf5b6eb97464d7d4aba0cb434933ea507e86b6b112a214dc6a38f16bb", // 후원 설정 객체 ID
+    "0x1f7bccd41c8280ff2a960a40594d44290e8aad9897541f4d049708ab89ce65a0", // 후원 설정 객체 ID
   coinType: "0x2::sui::SUI", // Coin<SUI> object ID
   clockObjectId: "0x6", // Clock object ID
 };

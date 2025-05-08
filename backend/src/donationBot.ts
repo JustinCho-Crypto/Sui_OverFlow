@@ -8,6 +8,9 @@ import config from "./config";
 interface RunBotResult {
   amount?: number;
   duration_months: number;
+  sponsor?: string;
+  recipient?: string;
+  digest?: string;
 }
 
 export async function runBot(): Promise<RunBotResult> {
@@ -49,10 +52,13 @@ export async function runBot(): Promise<RunBotResult> {
     },
   });
 
-  console.log("✅ Transfer Completed. Digest:", result.digest);
+  // console.log("✅ Transfer Completed. Digest:", result.digest);
 
   return {
-    amount: fields.monthly_amount,
+    amount: fields.monthly_amount / 10 ** 9,
     duration_months: fields.duration_months,
+    sponsor: fields.sponsor,
+    recipient: fields.recipient,
+    digest: result.digest,
   };
 }
