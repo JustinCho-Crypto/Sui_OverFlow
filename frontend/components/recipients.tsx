@@ -2,7 +2,7 @@ const CATEGORIES = [
   {
     name: "Little Stars Home",
     address:
-      "0x6b502754ca3d677b00676142ef0c525da1acb3068f0beeefc8738a178c86c528",
+      "0x403e9aaf5fecbd8740248b37d792fcab923ee18469a0736a49e9c2f2b5d09789",
     image: "/images/category-1.png",
   },
   {

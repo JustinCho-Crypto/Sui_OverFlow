@@ -69,15 +69,19 @@ export default function SimpleWalrusViewer() {
   if (urls.length === 0) return <p>😢 No uploaded files</p>;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="grid grid-cols-1 gap-4">
       {urls.map(({ url, toAddress }, idx) => (
-        <button
-          key={idx}
-          onClick={() => handleDownload(url)}
-          className="inline-block w-64 px-4 py-2 bg-purple-200 text-purple-800 rounded shadow hover:bg-purple-400 transition-colors overflow-hidden text-ellipsis whitespace-nowrap"
-        >
-          📥 Download Proof ({toAddress})
-        </button>
+        <div key={idx} className="relative w-full max-w-md mx-auto group">
+          <button
+            onClick={() => handleDownload(url)}
+            className="w-full max-w-md mx-auto px-5 py-3 bg-violet-200 text-violet-900 rounded-lg shadow hover:bg-violet-300 transition-all text-sm font-semibold text-center"
+          >
+            📥 Proof-of-Charity {idx + 1}
+          </button>
+          <div className="absolute left-1/2 bottom-full mb-1 -translate-x-1/2 w-full max-w-md px-3 py-1 bg-black text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity text-center">
+            Submitted from: {toAddress.slice(0, 4)}...{toAddress.slice(-4)}
+          </div>
+        </div>
       ))}
     </div>
   );

@@ -13,8 +13,8 @@ const DONATION_NFT_TYPE = `${PACKAGE_ID}::nft::DonationNFT`;
 export default function WalrusUploaderWithAccessCheck() {
   const currentAccount = useCurrentAccount();
   const [loading, setLoading] = useState(true);
-  const [fromAddresses, setFromAddresses] = useState<string[]>([]);
-  const [selectedFrom, setSelectedFrom] = useState<string | null>(null);
+  const [fromAddresses, setFromAddresses] = useState<{ name: string; address: string }[]>([]);
+  const [selectedFrom, setSelectedFrom] = useState<{ name: string; address: string } | null>(null);
 
   useEffect(() => {
     const checkNFTs = async () => {
@@ -27,10 +27,17 @@ export default function WalrusUploaderWithAccessCheck() {
           options: { showContent: true },
         });
 
+        const rawEntries = objects.data.map((nft, idx) => {
+          const fields = nft.data?.content?.fields;
+          const sponsorName = fields?.sponsor_name || "none";
+          const address = fields?.from_address;
+          return {
+            name: sponsorName === "none" ? `Sponsor ${idx + 1}` : sponsorName,
+            address,
+          };
+        });
         const uniqueFrom = Array.from(
-          new Set(
-            objects.data.map((nft) => nft.data?.content?.fields?.from_address)
-          )
+          new Map(rawEntries.map((entry) => [entry.address, entry])).values()
         );
 
         setFromAddresses(uniqueFrom);
@@ -59,11 +66,11 @@ export default function WalrusUploaderWithAccessCheck() {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
               {fromAddresses.map((from) => (
                 <button
-                  key={from}
+                  key={from.address}
                   onClick={() => setSelectedFrom(from)}
-                  className="aspect-square w-full rounded-lg bg-gradient-to-br from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300 shadow-sm flex items-center justify-center text-sm font-medium text-blue-800"
+                  className="px-6 py-3 rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300 shadow-sm text-sm font-medium text-blue-800 text-center"
                 >
-                  {from.slice(0, 32)}...
+                  {from.name}
                 </button>
               ))}
             </div>
@@ -78,7 +85,7 @@ export default function WalrusUploaderWithAccessCheck() {
             >
               ← Other Sponsors
             </button>
-            <WalrusUploader fromAddress={selectedFrom} />
+            <WalrusUploader fromAddress={selectedFrom.address} />
           </div>
         )
       )}

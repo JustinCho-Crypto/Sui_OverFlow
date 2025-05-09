@@ -109,13 +109,8 @@ export default function MyProfile() {
         </div>
         <div className="mt-6">
           <h3 className="text-md font-semibold mb-2">Submitted Proofs</h3>
-          <div className="grid grid-cols-3 gap-4">
-            {uploadedBlobs.map((blob, idx) => (
-              <SimpleWalrusViewer
-                key={`uploaded-${idx}`}
-                objectId={blob.objectId}
-              />
-            ))}
+          <div className="grid grid-cols-2 gap-4">
+            <SimpleWalrusViewer />
           </div>
         </div>
       </div>

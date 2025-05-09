@@ -26,6 +26,7 @@ export default function DonatePage() {
   const [selectedAmount, setSelectedAmount] = useState<number | null>(null);
   const [customAmount, setCustomAmount] = useState("");
   const [status, setStatus] = useState("");
+  const [sponsorName, setSponsorName] = useState("");
 
   const parsedAmount = selectedAmount ?? parseFloat(customAmount); // 입력받은 금액
   const amountInMist = Math.round(parsedAmount * 1_000_000_000); // 혹시 소수면은 정수로 보정한 값
@@ -73,7 +74,8 @@ export default function DonatePage() {
           tx.pure.address(selectedCategory?.address || ""),
           tx.pure.string("Charui"),
           tx.pure.string("Charity-Walrus-Sui"),
-          tx.pure.u64(BigInt(totalAmount)),
+          tx.pure.string(sponsorName.trim() || "none"),
+          tx.pure.u64(totalAmount),
           tx.pure.u64(parsedDuration),
           tx.pure.u64(Date.now()),
           tx.pure.string(
@@ -90,7 +92,8 @@ export default function DonatePage() {
           tx.pure.address(selectedCategory?.address || ""),
           tx.pure.string("Charui"),
           tx.pure.string("Charity-Walrus-Sui"),
-          tx.pure.u64(BigInt(totalAmount)),
+          tx.pure.string(sponsorName.trim() || "none"),
+          tx.pure.u64(totalAmount),
           tx.pure.u64(parsedDuration),
           tx.pure.u64(Date.now()),
           tx.pure.string(
@@ -236,6 +239,19 @@ export default function DonatePage() {
                 }}
               />
             </div>
+          </div>
+
+          <div className="p-4 rounded-lg bg-gray-100">
+            <label className="block mb-2 font-medium">
+              (Optional) The name you want to show to recipient
+            </label>
+            <input
+              type="text"
+              value={sponsorName}
+              onChange={(e) => setSponsorName(e.target.value)}
+              placeholder="e.g. Alice, Bob, etc"
+              className="w-full px-3 py-2 border rounded"
+            />
           </div>
 
           <button
