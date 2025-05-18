@@ -1,30 +1,31 @@
-# Charui - SUI 기반 기부 플랫폼
+# Charui - Donation Platform Powered by SUI
 
-SUI 블록체인을 활용한 기부 플랫폼입니다.
+A donation platform built on the SUI blockchain.
 
-## 주요 기능
+## Key Features
 
-- SUI 코인을 통한 기부
-- 다양한 카테고리별 기부
-- 기부 내역 추적
-- 지갑 연결 및 트랜잭션 처리
+- Donate using SUI tokens
+- Donations categorized by various causes
+- Track donation history
+- Wallet connection and transaction handling
 
-## 기술 스택
+## Tech Stack
 
 - Frontend: Next.js, TypeScript
 - Blockchain: SUI
 - Wallet: @mysten/dapp-kit
 
-## 설치 및 실행
+## Installation & Run
 
 ```bash
-# 의존성 설치
+# Install dependencies
 npm install
 
-# 개발 서버 실행
+# Start development server
 npm run dev
-```
+
 
 ## 라이센스
 
-MIT 
+MIT
+```
