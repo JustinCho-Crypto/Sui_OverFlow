@@ -26,6 +26,5 @@ npm run dev
 
 
 ## 라이센스
-
 MIT
 ```
