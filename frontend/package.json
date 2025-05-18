@@ -16,8 +16,8 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@mysten/dapp-kit": "^0.14.53",
-    "@mysten/sui": "^1.28.0",
+    "@mysten/dapp-kit": "^0.16.3",
+    "@mysten/sui": "^1.29.1",
     "@mysten/sui.js": "^0.54.1",
     "@mysten/wallet-standard": "^0.14.5",
     "@mysten/walrus": "^0.0.17",

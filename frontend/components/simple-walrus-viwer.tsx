@@ -32,12 +32,14 @@ export default function SimpleWalrusViewer() {
         const blobs = res.data || [];
         console.log("✅ blobs:", blobs);
         const urls = blobs.map((blob) => {
-          const blobIdBytes = blob.data?.content?.fields?.blob_id;
-          const toAddress = blob.data?.content?.fields?.to_address;
+          const blobIdBytes = (blob.data?.content as any)?.fields?.blob_id;
+          const toAddress = (blob.data?.content as any)?.fields?.to_address;
           if (!blobIdBytes || !Array.isArray(blobIdBytes)) {
             throw new Error("Cannot find Blob ID");
           }
-          const blobIdString = new TextDecoder().decode(new Uint8Array(blobIdBytes));
+          const blobIdString = new TextDecoder().decode(
+            new Uint8Array(blobIdBytes)
+          );
           console.log("✅ blobIdString:", blobIdString);
           return {
             url: `${AGGREGATOR_BASE_URL}/${blobIdString}`,
@@ -46,7 +48,6 @@ export default function SimpleWalrusViewer() {
         });
 
         setUrls(urls);
-
       } catch (e: any) {
         console.error("❌ BlobInfo fetch failed:", e);
         setError(e.message || "Unknown error");

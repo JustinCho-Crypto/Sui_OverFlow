@@ -1,4 +1,4 @@
-import { runBot } from "./donationBot";
+import { runBot } from "./donation-bot";
 
 let intervalId: NodeJS.Timeout;
 let executionCount = 0;

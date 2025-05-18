@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import DonatePage from "../components/donate";
 import MyProfile from "../components/profile";
-import WalrusUploaderWithAccessCheck from "../components/walrusuploaderwithaccesscheck";
+import WalrusUploaderWithAccessCheck from "../components/walrus-uploader-with-access-check";
 import { ConnectButton, useCurrentAccount } from "@mysten/dapp-kit";
 
 export default function Home() {

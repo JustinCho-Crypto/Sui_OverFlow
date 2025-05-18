@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import WalrusUploader from "./walrusuploader";
+import WalrusUploader from "./walrus-uploader";
 import { useCurrentAccount } from "@mysten/dapp-kit";
 import { SuiClient } from "@mysten/sui/client";
 import { PACKAGE_ID } from "../config";
@@ -13,8 +13,13 @@ const DONATION_NFT_TYPE = `${PACKAGE_ID}::nft::DonationNFT`;
 export default function WalrusUploaderWithAccessCheck() {
   const currentAccount = useCurrentAccount();
   const [loading, setLoading] = useState(true);
-  const [fromAddresses, setFromAddresses] = useState<{ name: string; address: string }[]>([]);
-  const [selectedFrom, setSelectedFrom] = useState<{ name: string; address: string } | null>(null);
+  const [fromAddresses, setFromAddresses] = useState<
+    { name: string; address: string }[]
+  >([]);
+  const [selectedFrom, setSelectedFrom] = useState<{
+    name: string;
+    address: string;
+  } | null>(null);
 
   useEffect(() => {
     const checkNFTs = async () => {
@@ -28,7 +33,7 @@ export default function WalrusUploaderWithAccessCheck() {
         });
 
         const rawEntries = objects.data.map((nft, idx) => {
-          const fields = nft.data?.content?.fields;
+          const fields = (nft.data?.content as any)?.fields;
           const sponsorName = fields?.sponsor_name || "none";
           const address = fields?.from_address;
           return {

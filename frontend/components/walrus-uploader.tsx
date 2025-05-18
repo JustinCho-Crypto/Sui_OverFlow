@@ -105,7 +105,6 @@ export default function WalrusUploader({
       const result = await signAndExecute(
         {
           transaction: tx,
-          options: { showEffects: true },
         },
         {
           onSuccess: (res) =>
@@ -118,10 +117,7 @@ export default function WalrusUploader({
           onError: (e) => setStatus("❌ Error occured: " + e.message),
         }
       );
-      console.log(
-        "✅ register_blob transaction success:",
-        result.effects.transactionDigest
-      );
+      console.log("✅ register_blob transaction success:", result.digest);
       // setStatus(`✅ Upload and registration complete! TX Hash: ${result.digest}`);
     } catch (err: any) {
       console.error("❌ Error occurred:", err);

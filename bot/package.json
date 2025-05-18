@@ -1,5 +1,5 @@
 {
-  "name": "backend",
+  "name": "bot",
   "version": "1.0.0",
   "description": "Charui Donation Backend",
   "main": "index.js",

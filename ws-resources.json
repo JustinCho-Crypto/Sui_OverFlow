@@ -1,0 +1,19 @@
+{
+  "headers": {
+    "/index.html": {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "max-age=3500"
+    }
+  },
+  "routes": {
+    "/*": "/server/pages/index.html"
+  },
+  "metadata": {
+    "link": "https://charui.wal.app",
+    "image_url": "https://www.walrus.xyz/walrus-site",
+    "description": "This is a charui site.",
+    "project_url": "https://github.com/JustinCho-Crypto/Sui_OverFlow/",
+    "creator": "JustinCho JongwoongPark NickBear"
+  },
+  "ignore": ["/private/*", "/secret.txt", "/images/tmp/*"]
+}

@@ -10,6 +10,12 @@ import Image from "next/image";
 import { PACKAGE_ID, OWNER_ADDRESS } from "../config";
 import CATEGORIES from "./recipients";
 
+interface Category {
+  name: string;
+  address: string;
+  image: string;
+}
+
 const PRESET_AMOUNTS = [1, 5, 10, 20];
 const DURATION_PRESETS = [3, 6, 12];
 
@@ -17,7 +23,9 @@ export default function DonatePage() {
   const currentAccount = useCurrentAccount();
   const { mutate: signAndExecute, isPending } = useSignAndExecuteTransaction();
 
-  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null
+  );
   const [donationType, setDonationType] = useState<
     "temporary" | "monthly" | null
   >(null);
@@ -105,7 +113,6 @@ export default function DonatePage() {
       await signAndExecute(
         {
           transaction: tx,
-          options: { showEffects: true, showObjectChanges: true },
         },
         {
           onSuccess: (res) =>
